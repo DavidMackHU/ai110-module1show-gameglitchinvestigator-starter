@@ -4,9 +4,9 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 
 ## 1. What was broken when you started?
 
-- What did the game look like the first time you ran it?
-- List at least two concrete bugs you noticed at the start  
-  (for example: "the hints were backwards").
+- It gave incorect hints
+- New game button has no functionality
+- Attempts start at 1
 
 **Bug Reproduction Log**
 
@@ -14,16 +14,22 @@ Document at least 3 bugs you found. Add rows as needed.
 
 | Input | Expected Behavior | Actual Behavior | Console Output / Error |
 |-------|-------------------|-----------------|------------------------|
-| | | | |
-| | | | |
-| | | | |
+|Guess of 50|"too low"|"too high"| Incorrect Hint|
+|Guess of 75|"too low"|"too high"| Incorrect Hint|
+|Giuess of 85|"too low"|"too high"|Incorrect Hint|
 
 ---
 
 ## 2. How did you use AI as a teammate?
 
-- Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)?
+- Which AI tools did you use on this project (for example: ChatGPT, Gemini, Copilot)? 
+
+Claude
+
 - Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
+
+Remove the string-conversion toggle entirely so secret is always compared as the same type it was generated as (int), and drop the string-comparison fallback in check_guess — if types ever mismatch, that should be treated as a real bug, not silently "handled" with lexicographic comparison.
+
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
 
 ---
