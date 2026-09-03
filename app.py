@@ -59,19 +59,29 @@ if "history" not in st.session_state:
 
 st.subheader("Make a guess")
 
-# BUG (FIXED): message used to hardcode "1 and 100" regardless of
-# difficulty, so Easy/Hard players saw the wrong range.
-st.info(
-    f"Guess a number between {low} and {high}. "
-    f"Attempts left: {attempt_limit - st.session_state.attempts}"
-)
+# BUG (FIXED): the "Attempts left" info box and debug expander used to be
+# rendered here, before the submit-handling block below had a chance to
+# increment st.session_state.attempts. Since Streamlit reruns the whole
+# script top-to-bottom on every click, that meant both displays always
+# showed the attempt count from BEFORE the current click was processed,
+# so the counter appeared stuck at 0 after the first submit. They're now
+# rendered into placeholders and filled in after the increment happens.
+info_placeholder = st.empty()
+debug_placeholder = st.empty()
 
-with st.expander("Developer Debug Info"):
-    st.write("Secret:", st.session_state.secret)
-    st.write("Attempts:", st.session_state.attempts)
-    st.write("Score:", st.session_state.score)
-    st.write("Difficulty:", difficulty)
-    st.write("History:", st.session_state.history)
+
+def render_status_displays():
+    info_placeholder.info(
+        f"Guess a number between {low} and {high}. "
+        f"Attempts left: {attempt_limit - st.session_state.attempts}"
+    )
+    with debug_placeholder.expander("Developer Debug Info"):
+        st.write("Secret:", st.session_state.secret)
+        st.write("Attempts:", st.session_state.attempts)
+        st.write("Score:", st.session_state.score)
+        st.write("Difficulty:", difficulty)
+        st.write("History:", st.session_state.history)
+
 
 raw_guess = st.text_input(
     "Enter your guess:",
@@ -103,6 +113,7 @@ if st.session_state.status != "playing":
         st.success("You already won. Start a new game to play again.")
     else:
         st.error("Game over. Start a new game to try again.")
+    render_status_displays()
     st.stop()
 
 if submit:
@@ -156,6 +167,8 @@ if submit:
                     f"The secret was {st.session_state.secret}. "
                     f"Score: {st.session_state.score}"
                 )
+
+render_status_displays()
 
 st.divider()
 st.caption("Built by an AI that claims this code is production-ready.")
