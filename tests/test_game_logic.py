@@ -86,8 +86,8 @@ def test_parse_guess_non_numeric():
 
 
 def test_update_score_win_first_attempt():
-    # 100 - 10 * (1 + 1) = 80
-    assert update_score(0, "Win", 1) == 80
+    # 100 - 10 * 1 = 90
+    assert update_score(0, "Win", 1) == 90
 
 
 def test_update_score_win_never_drops_below_10():

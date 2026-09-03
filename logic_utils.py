@@ -47,21 +47,20 @@ def check_guess(guess, secret):
     return "Too Low"
 
 
+MIN_WIN_POINTS = 10
+WRONG_GUESS_PENALTY = 5
+
+
 def update_score(current_score: int, outcome: str, attempt_number: int):
     """Update score based on outcome and attempt number."""
+
     if outcome == "Win":
-        points = 100 - 10 * (attempt_number + 1)
-        if points < 10:
-            points = 10
+        points = 100 - 10 * attempt_number
+        if points < MIN_WIN_POINTS:
+            points = MIN_WIN_POINTS
         return current_score + points
 
-    # BUG (FIXED): "Too High" used to ADD 5 points on even attempt numbers
-    # instead of subtracting, rewarding the player for guessing wrong.
-    # Wrong guesses should always cost points, same as "Too Low".
-    if outcome == "Too High":
-        return current_score - 5
-
-    if outcome == "Too Low":
-        return current_score - 5
+    if outcome in ("Too High", "Too Low"):
+        return max(current_score - WRONG_GUESS_PENALTY, 0)
 
     return current_score
