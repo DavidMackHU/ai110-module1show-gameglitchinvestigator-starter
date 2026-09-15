@@ -7,6 +7,7 @@ Answer each question in 3 to 5 sentences. Be specific and honest about what actu
 - It gave incorect hints
 - New game button has no functionality
 - Attempts start at 1
+- point system
 
 **Bug Reproduction Log**
 
